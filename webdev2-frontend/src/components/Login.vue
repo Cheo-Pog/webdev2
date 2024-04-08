@@ -21,18 +21,34 @@
 </template>
 
 <script>
+
+import { useStore } from '../stores/store';
+import axios from '../axios-auth';
+
 export default {
   name: "Login",
+  setup() {
+    const store = useStore();
+    return { store };
+  },
   data() {
     return {
       username: "",
       password: "",
+      errorMessage: "",
     };
   },
   methods: {
-
+    login() {
+      this.store.login(this.username, this.password)
+          .then(result => {
+           this.$router.replace("/products")
+          })
+          .catch(error => this.errorMessage = error);
+    }
   }
-};
+}
+;
 </script>
 
 <style>
