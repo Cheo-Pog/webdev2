@@ -2,7 +2,10 @@
 
 namespace Controllers;
 
+use Exception;
 use Services\UserService;
+use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class UserController extends Controller
 {
@@ -15,6 +18,7 @@ class UserController extends Controller
     }
 
     public function login() {
+
         // get username and password from request
         $data = $this->createObjectFromPostedJson("Models\\User");
         

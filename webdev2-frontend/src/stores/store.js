@@ -38,6 +38,13 @@ export const useStore = defineStore('store',
                     this.username = username;
                     axios.defaults.headers.common['Authorization'] = "Bearer " + token;
                 }
+            },
+            logout() {
+                this.token = '';
+                this.username = '';
+                localStorage.removeItem('token');
+                localStorage.removeItem('username');
+                axios.defaults.headers.common['Authorization'] = '';
             }
         }
     })
