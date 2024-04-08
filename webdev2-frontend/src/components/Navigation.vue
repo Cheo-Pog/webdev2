@@ -23,8 +23,14 @@
 </template>
 
 <script>
+import { useStore } from "../stores/store";
+
 export default {
   name: "Navigation",
+  setup() {
+    const store = useStore();
+    return { store };
+  },
 };
 </script>
 

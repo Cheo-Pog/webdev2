@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "../../axios-auth";
 
 import ProductListItem from "./ProductListItem.vue";
 
@@ -38,7 +38,7 @@ export default {
   methods: {
     update() {
       axios
-        .get("http://localhost/products")
+        .get("/products")
         .then((result) => {
           console.log(result);
           this.products = result.data;

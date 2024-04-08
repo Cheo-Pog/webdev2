@@ -6,13 +6,14 @@
           <form>
             <div class="mb-3">
               <label for="inputUsername" class="form-label">Username</label>
-              <input id="inputUsername" type="text" class="form-control" />
+              <input id="inputUsername" type="text" v-model="username" class="form-control"/>
             </div>
             <div class="mb-3">
               <label for="inputPassword" class="form-label">Password</label>
-              <input type="password" class="form-control" id="inputPassword" />
+              <input type="password" class="form-control" v-model="password" id="inputPassword"/>
             </div>
-            <button type='button' class="btn btn-primary">Submit</button>
+            <div class="alert alert-danger" v-if="errorMessage">{{errorMessage}}</div>
+            <button type='button' class="btn btn-primary" @click="login">Submit</button>
           </form>
         </div>
       </div>
