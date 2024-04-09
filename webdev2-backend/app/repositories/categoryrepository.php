@@ -11,7 +11,7 @@ class CategoryRepository extends Repository
     function getAll($offset = NULL, $limit = NULL)
     {
         try {
-            $query = "SELECT * FROM category";
+            $query = "SELECT id, name FROM category";
             if (isset($limit) && isset($offset)) {
                 $query .= " LIMIT :limit OFFSET :offset ";
             }
@@ -23,9 +23,9 @@ class CategoryRepository extends Repository
             $stmt->execute();
 
             $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Category');
-            $articles = $stmt->fetchAll();
+            $Categories = $stmt->fetchAll();
 
-            return $articles;
+            return $Categories;
         } catch (PDOException $e) {
             echo $e;
         }
@@ -34,14 +34,14 @@ class CategoryRepository extends Repository
     function getOne($id)
     {
         try {
-            $stmt = $this->connection->prepare("SELECT * FROM category WHERE id = :id");
+            $stmt = $this->connection->prepare("SELECT id, name FROM category WHERE id = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 
             $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Category');
-            $product = $stmt->fetch();
+            $category = $stmt->fetch();
 
-            return $product;
+            return $category;
         } catch (PDOException $e) {
             echo $e;
         }
@@ -50,9 +50,10 @@ class CategoryRepository extends Repository
     function insert($category)
     {
         try {
-            $stmt = $this->connection->prepare("INSERT into category (name) VALUES (?)");
+            $stmt = $this->connection->prepare("INSERT into category (name) VALUES (:name)");
 
-            $stmt->execute([$category->name]);
+            $stmt->bindParam(':name', $category->name);
+            $stmt->execute();
 
             $category->id = $this->connection->lastInsertId();
 
@@ -66,9 +67,11 @@ class CategoryRepository extends Repository
     function update($category, $id)
     {
         try {
-            $stmt = $this->connection->prepare("UPDATE category SET name = ? WHERE id = ?");
+            $stmt = $this->connection->prepare("UPDATE category SET name = :name WHERE id = :id");
 
-            $stmt->execute([$category->name, $id]);
+            $stmt->bindParam(':name', $category->name);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
 
             return $category;
         } catch (PDOException $e) {
@@ -81,7 +84,7 @@ class CategoryRepository extends Repository
         try {
             $stmt = $this->connection->prepare("DELETE FROM category WHERE id = :id");
             $stmt->bindParam(':id', $id);
-            $stmt->execute();
+            $stmt->execute(); 
             return;
         } catch (PDOException $e) {
             echo $e;

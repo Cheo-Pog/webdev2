@@ -4,26 +4,26 @@ namespace Repositories;
 
 use PDO;
 use PDOException;
+use Models\User;
 use Repositories\Repository;
 
 class UserRepository extends Repository
 {
-    function checkUsernamePassword($username, $password)
+    function checkUsernamePassword($email, $password)
     {
         try {
             // retrieve the user with the given username
-            $stmt = $this->connection->prepare("SELECT id, username, password, email FROM user WHERE username = :username");
-            $stmt->bindParam(':username', $username);
+            $stmt = $this->connection->prepare("SELECT id, firstname, lastname, password, email FROM user WHERE email = :email");
+            $stmt->bindParam(':email', $email);
             $stmt->execute();
 
-            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\User');
+            $stmt->setFetchMode(PDO::FETCH_CLASS, User::class);
             $user = $stmt->fetch();
 
             // verify if the password matches the hash in the database
-            $result = $this->verifyPassword($password, $user->password);
-
-            if (!$result)
+            if(!$this->verifyPassword($password, $user->password))
                 return false;
+
 
             // do not pass the password hash to the caller
             $user->password = "";

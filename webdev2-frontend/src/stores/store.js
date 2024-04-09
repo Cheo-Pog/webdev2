@@ -40,11 +40,14 @@ export const useStore = defineStore('store',
                 }
             },
             logout() {
-                this.token = '';
-                this.username = '';
-                localStorage.removeItem('token');
-                localStorage.removeItem('username');
-                axios.defaults.headers.common['Authorization'] = '';
+                axios.post('/users/logout')
+                .then(result => {
+                    this.token = '';
+                    this.username = '';
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('username');
+                    delete axios.defaults.headers.common['Authorization'];
+                })
             }
         }
     })

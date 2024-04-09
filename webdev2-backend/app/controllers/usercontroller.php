@@ -56,4 +56,14 @@ class UserController extends Controller
         $jwt = JWT::encode($payload, $key, 'HS256');
         $this->respond($jwt);
     }
+
+    public function logout() {
+        // check for jwt
+        $decoded = $this->checkForJwt();
+        if(!$decoded){
+            return;
+        }
+        // logout
+        $this->respond("logged out");
+    }
 }
