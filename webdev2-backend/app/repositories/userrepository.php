@@ -34,6 +34,41 @@ class UserRepository extends Repository
         }
     }
 
+    function getAll($offset = NULL, $limit = NULL)
+    {
+        try {
+            $query = "SELECT id, firstname, lastname, email, rank FROM user";
+            if (isset($limit) && isset($offset)) {
+                $query .= " LIMIT :limit OFFSET :offset ";
+            }
+            $stmt = $this->connection->prepare($query);
+            if (isset($limit) && isset($offset)) {
+                $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+                $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+            }
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_CLASS, User::class);
+
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+
+    function getOne($id)
+    {
+        try {
+            $query = "SELECT id, firstname, lastname, email, rank FROM user WHERE id = :id";
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+
+            $stmt->setFetchMode(PDO::FETCH_CLASS, User::class);
+            return $stmt->fetch();
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+
     // hash the password (currently uses bcrypt)
     function hashPassword($password)
     {

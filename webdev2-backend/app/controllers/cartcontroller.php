@@ -1,17 +1,18 @@
 <?php
 
 namespace Controllers;
+use Services\CartService;
 
 use Exception;
 
 class CartController extends Controller
 {
-    // private $service;
+    private $service;
 
     // initialize services
     function __construct()
     {
-        // $this->service = new CategoryService();
+        $this->service = new CartService();
     }
 
     public function getAll()

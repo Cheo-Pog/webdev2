@@ -29,6 +29,17 @@ $router->delete('/categories/(\d+)', 'CategoryController@delete');
 
 // routes for the users endpoint
 $router->post('/users/login', 'UserController@login');
+$router->post('/users/logout', 'UserController@logout');
+$router->get('/users', 'UserController@getAll');
+$router->get('/users/(\d+)', 'UserController@getOne');
+
+// routes for the cart endpoint
+$router->get('/cart', 'CartController@getAll');
+$router->get('/cart/(\d+)', 'CartController@getOne');
+$router->post('/cart', 'CartController@create');
+$router->put('/cart/(\d+)', 'CartController@update');
+$router->delete('/cart/(\d+)', 'CartController@delete');
+
 
 // Run it!
 $router->run();

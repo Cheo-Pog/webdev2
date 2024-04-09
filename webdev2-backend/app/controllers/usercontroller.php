@@ -22,13 +22,13 @@ class UserController extends Controller
         // get username and password from request
         $data = $this->createObjectFromPostedJson("Models\\User");
         
-        $username = $data->username;
+        $email = $data->email;
         $password = $data->password;
 
         // get user from db
 
         try{
-        $user = $this->service->checkUsernamePassword($username, $password);
+        $user = $this->service->checkUsernamePassword($email, $password);
         }catch(Exception $e){
             $this->respondWithError(401, $e);
         }
@@ -65,5 +65,23 @@ class UserController extends Controller
         }
         // logout
         $this->respond("logged out");
+    }
+
+    public function getAll() {
+        $decoded = $this->checkForJwt();
+        if(!$decoded){
+            return;
+        }
+        $users = $this->service->getAll();
+        $this->respond($users);
+    }
+
+    public function getOne($id) {
+        $decoded = $this->checkForJwt();
+        if(!$decoded){
+            return;
+        }
+        $user = $this->service->getOne($id);
+        $this->respond($user);
     }
 }

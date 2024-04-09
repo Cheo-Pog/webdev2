@@ -5,16 +5,16 @@ export const useStore = defineStore('store',
     {
         state: () => ({
             token: '',
-            username: ''
+            email: ''
         }),
         getters: {
             isLoggedIn: (state) => state.token != '',
         },
         actions: {
-            login(username, password) {
+            login(email, password) {
                 return new Promise((resolve, reject) => {
                     axios.post('/users/login', {
-                        username: username,
+                        email: email,
                         password: password
                     })
                     .then(result => {
@@ -22,9 +22,9 @@ export const useStore = defineStore('store',
                         alert(result.data);
                         axios.defaults.headers.common['Authorization'] = "Bearer " + result.data;
                         this.token = result.data;
-                        this.username = username;
+                        this.email = email;
                         localStorage.setItem('token', result.data);
-                        localStorage.setItem('username', username);
+                        localStorage.setItem('username', email);
                         resolve();
                     })
                     .catch(error => reject(error.response.data.errorMessage));
@@ -35,7 +35,7 @@ export const useStore = defineStore('store',
                 const username = localStorage.getItem('username');
                 if (token) {
                     this.token = token;
-                    this.username = username;
+                    this.email = username;
                     axios.defaults.headers.common['Authorization'] = "Bearer " + token;
                 }
             },
@@ -43,7 +43,7 @@ export const useStore = defineStore('store',
                 axios.post('/users/logout')
                 .then(result => {
                     this.token = '';
-                    this.username = '';
+                    this.email = '';
                     localStorage.removeItem('token');
                     localStorage.removeItem('username');
                     delete axios.defaults.headers.common['Authorization'];

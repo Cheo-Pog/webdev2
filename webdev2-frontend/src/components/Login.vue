@@ -5,8 +5,8 @@
         <div class="col-md-6">
           <form>
             <div class="mb-3">
-              <label for="inputUsername" class="form-label">Username</label>
-              <input id="inputUsername" type="text" v-model="username" class="form-control"/>
+              <label for="inputemail" class="form-label">Email</label>
+              <input id="inputemial" type="text" v-model="email" class="form-control"/>
             </div>
             <div class="mb-3">
               <label for="inputPassword" class="form-label">Password</label>
@@ -34,14 +34,14 @@ export default {
   },
   data() {
     return {
-      username: "",
+      email: "",
       password: "",
       errorMessage: "",
     };
   },
   methods: {
     login() {
-      this.store.login(this.username, this.password)
+      this.store.login(this.email, this.password)
           .then(result => {
            this.$router.replace("/products")
           })
