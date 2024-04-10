@@ -5,29 +5,35 @@
         <li class="nav-item">
           <router-link to="/" class="nav-link" active-class="active">Home</router-link>
         </li>
-        <li class="nav-item">
-          <router-link to="/products" class="nav-link" active-class="active">Products</router-link>
+        <li class="nav-item dropdown">
+          <categoryList />
         </li>
         <li class="nav-item">
           <router-link to="/login" class="nav-link" active-class="active">Login</router-link>
         </li>
-        <li class="nav-item">
-          <button class="nav-link" active-class="active" @click="logout">Logout</button>
-        </li>
+
       </ul>
     </div>
   </nav>
 </template>
 <script>
 import { useStore } from "../stores/store";
+import categoryList from "./categories/categoryList.vue";
 
 export default {
   name: "Navigation",
+  components: {
+    categoryList,
+  },
+  data() {
+    return {
+    };
+  },
   setup() {
     const store = useStore();
     return { store };
   },
-   methods: {
+  methods: {
     logout() {
       this.store.logout();
       this.$router.replace("/");
@@ -36,4 +42,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped></style>

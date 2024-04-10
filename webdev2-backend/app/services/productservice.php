@@ -15,6 +15,9 @@ class ProductService {
     public function getAll($offset = NULL, $limit = NULL) {
         return $this->repository->getAll($offset, $limit);
     }
+    public function GetByCategory($categoryId, $offset = NULL, $limit = NULL) {
+        return $this->repository->GetByCategory($categoryId, $offset, $limit);
+    }
 
     public function getOne($id) {
         return $this->repository->getOne($id);

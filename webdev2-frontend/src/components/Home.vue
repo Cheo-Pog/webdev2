@@ -3,18 +3,21 @@
     <div class="container">
       <h2 class="mt-3 mt-lg-5">Welcome to the homepage</h2>
     </div>
+    <div class="row mt-3">
     <product-list-item
-          v-for="product in products"
+          v-for="product in randomProducts"
           :key="product.id"
           :product="product"
           @update="update"
-        />    
+        />  
+        </div>  
   </section>
 </template>
 
 <script>
-import axios from "axios";
+import axios from "../axios-auth";
 import ProductListItem from "./Products/ProductListItem.vue";
+
 export default {
   name: "Home",
   components: {
@@ -23,6 +26,7 @@ export default {
   data() {
     return {
       products: [],
+      randomProducts: [],
     };
   },
   mounted() {
@@ -33,10 +37,25 @@ export default {
       axios
         .get("/products")
         .then((result) => {
-          console.log(result);
           this.products = result.data;
+          this.randomProducts = this.getRandomProducts(this.products, 3);
         })
         .catch((error) => console.log(error));
+    },
+    getRandomProducts(products, count) {
+      if(count > products.length) {
+        return products;
+      }
+      let randomProducts = [];
+      let usedIndex = new Set();
+      while (randomProducts.length < count) {
+        let randomIndex = Math.floor(Math.random() * products.length);
+        if (!usedIndex.has(randomIndex)) {
+          randomProducts.push(products[randomIndex]);
+          usedIndex.add(randomIndex);
+        }
+      }
+      return randomProducts;
     },
   },
 };

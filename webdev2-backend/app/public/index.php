@@ -15,6 +15,7 @@ $router->setNamespace('Controllers');
 
 // routes for the products endpoint
 $router->get('/products', 'ProductController@getAll');
+$router->get('/products/category/(\d+)', 'ProductController@getByCategory');
 $router->get('/products/(\d+)', 'ProductController@getOne');
 $router->post('/products', 'ProductController@create');
 $router->put('/products/(\d+)', 'ProductController@update');

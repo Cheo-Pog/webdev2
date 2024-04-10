@@ -29,6 +29,26 @@ class ProductRepository extends Repository
             echo $e;
         }
     }
+    function getByCategory($categoryId, $offset = NULL, $limit = NULL)
+    {
+        try {
+            $query = "SELECT products.id, products.name, products.price, products.description, products.image, category.id as category_id, category.name as category_name FROM products INNER JOIN category ON products.category_id = category.id WHERE category.id = :category_id";
+            if (isset($limit) && isset($offset)) {
+                $query .= " LIMIT :limit OFFSET :offset ";
+            }
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindParam(':category_id', $categoryId);
+            if (isset($limit) && isset($offset)) {
+                $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+                $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+            }
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_CLASS, Product::class);
+
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
 
     function getOne($id)
     {

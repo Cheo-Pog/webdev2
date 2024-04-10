@@ -31,6 +31,22 @@ class ProductController extends Controller
 
         $this->respond($products);
     }
+    public function getByCategory($categoryId)
+    {
+        $offset = NULL;
+        $limit = NULL;
+
+        if (isset($_GET["offset"]) && is_numeric($_GET["offset"])) {
+            $offset = $_GET["offset"];
+        }
+        if (isset($_GET["limit"]) && is_numeric($_GET["limit"])) {
+            $limit = $_GET["limit"];
+        }
+
+        $products = $this->service->getByCategory($categoryId, $offset, $limit);
+
+        $this->respond($products);
+    }
 
     public function getOne($id)
     {

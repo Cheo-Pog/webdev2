@@ -13,7 +13,8 @@ const router = createRouter({
     { path: '/products', component: ProductList },
     { path: '/login', component: Login },
     { path: '/createproduct', component: CreateProduct },
-    { path: '/editproduct/:id', component: EditProduct, props: true  }
+    { path: '/editproduct/:id', component: EditProduct, props: true },
+    { path: '/products/category/:id', component: ProductList},
   ]
 })
 

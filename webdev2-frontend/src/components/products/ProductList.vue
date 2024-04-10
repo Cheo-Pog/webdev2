@@ -32,13 +32,17 @@ export default {
       products: [],
     };
   },
+  watch: {
+    // anders doet hij het niet als je vanuit een andere product page komt
+    '$route': 'update'
+  },
   mounted() {
     this.update();
   },
   methods: {
     update() {
       axios
-        .get("/products")
+        .get("/products/category/" + this.$route.params.id)
         .then((result) => {
           console.log(result);
           this.products = result.data;
