@@ -13,7 +13,7 @@ class UserRepository extends Repository
     {
         try {
             // retrieve the user with the given username
-            $stmt = $this->connection->prepare("SELECT id, firstname, lastname, password, email FROM user WHERE email = :email");
+            $stmt = $this->connection->prepare("SELECT id, firstname, lastname, password, email FROM users WHERE email = :email");
             $stmt->bindParam(':email', $email);
             $stmt->execute();
 
@@ -37,7 +37,7 @@ class UserRepository extends Repository
     function getAll($offset = NULL, $limit = NULL)
     {
         try {
-            $query = "SELECT id, firstname, lastname, email, rank FROM user";
+            $query = "SELECT id, firstname, lastname, email, rank FROM users";
             if (isset($limit) && isset($offset)) {
                 $query .= " LIMIT :limit OFFSET :offset ";
             }

@@ -6,7 +6,7 @@
         <div class="float-start">
           <p>{{ product.name }}</p>
           <p>
-            <small>{{ product.category.name }}</small>
+            <small>{{ product.category_name }}</small>
           </p>
         </div>
         <span class="price float-end">{{ product.price }}</span>

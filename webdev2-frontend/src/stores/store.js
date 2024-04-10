@@ -24,7 +24,7 @@ export const useStore = defineStore('store',
                         this.token = result.data;
                         this.email = email;
                         localStorage.setItem('token', result.data);
-                        localStorage.setItem('username', email);
+                        localStorage.setItem('email', email);
                         resolve();
                     })
                     .catch(error => reject(error.response.data.errorMessage));
@@ -32,22 +32,19 @@ export const useStore = defineStore('store',
             },
             autoLoggin() {
                 const token = localStorage.getItem('token');
-                const username = localStorage.getItem('username');
+                const email = localStorage.getItem('email');
                 if (token) {
                     this.token = token;
-                    this.email = username;
+                    this.email = email;
                     axios.defaults.headers.common['Authorization'] = "Bearer " + token;
                 }
             },
             logout() {
-                axios.post('/users/logout')
-                .then(result => {
                     this.token = '';
                     this.email = '';
                     localStorage.removeItem('token');
-                    localStorage.removeItem('username');
+                    localStorage.removeItem('email');
                     delete axios.defaults.headers.common['Authorization'];
-                })
             }
         }
     })

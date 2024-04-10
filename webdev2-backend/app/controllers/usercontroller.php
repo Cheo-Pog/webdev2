@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use Exception;
+use Models\User;
 use Services\UserService;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
@@ -20,7 +21,7 @@ class UserController extends Controller
     public function login() {
 
         // get username and password from request
-        $data = $this->createObjectFromPostedJson("Models\\User");
+        $data = $this->createObjectFromPostedJson(User::class);
         
         $email = $data->email;
         $password = $data->password;
@@ -45,7 +46,7 @@ class UserController extends Controller
         $payload = [
             'iss' => 'http://www.inholland.nl',
             'aud' => 'http://www.inholland.nl',
-            'sub' => $user->username,
+            'sub' => $user->email,
             'iat' => time(),
             'nbf' => time(),
             'exp' => time() + 60 * 60, 
