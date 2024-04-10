@@ -43,7 +43,7 @@ export default {
     login() {
       this.store.login(this.email, this.password)
           .then(result => {
-           this.$router.replace("/products")
+           this.$router.replace("/")
           })
           .catch(error => this.errorMessage = error);
     }

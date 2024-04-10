@@ -5,13 +5,15 @@
         <li class="nav-item">
           <router-link to="/" class="nav-link" active-class="active">Home</router-link>
         </li>
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown" v-if="isLoggedIn">
           <categoryList />
         </li>
-        <li class="nav-item">
+        <li class="nav-item right" v-if="!isLoggedIn">
           <router-link to="/login" class="nav-link" active-class="active">Login</router-link>
         </li>
-
+        <li class="nav-item right" v-else>
+          <router-link to="/createproduct" class="nav-link" active-class="active">{{ name }}</router-link>
+        </li>
       </ul>
     </div>
   </nav>
@@ -27,7 +29,15 @@ export default {
   },
   data() {
     return {
-    };
+      isLoggedIn: this.store.isLoggedIn,
+      name: this.store.name,
+    }
+  },
+  watch: {
+    '$route': function() {
+      this.isLoggedIn = this.store.isLoggedIn;
+      this.name = this.store.name;
+    }
   },
   setup() {
     const store = useStore();
@@ -42,4 +52,7 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+
+</style>
