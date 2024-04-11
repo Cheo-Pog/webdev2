@@ -1,10 +1,7 @@
 <template>
   <section>
     <div class="container">
-      <h2 class="mt-3 mt-lg-5">Products</h2>
-        <button type="button" class="btn btn-primary mt-3" @click="this.$router.push('/createproduct');">
-            Add product
-          </button>
+      <h2 class="mt-3 mt-lg-5">Here are some of my {{ name}}</h2>
       <div class="row mt-3">
         <product-list-item
           v-for="product in products"
@@ -30,6 +27,7 @@ export default {
   data() {
     return {
       products: [],
+      name: '',
     };
   },
   watch: {
@@ -44,8 +42,8 @@ export default {
       axios
         .get("/products/category/" + this.$route.params.id)
         .then((result) => {
-          console.log(result);
           this.products = result.data;
+          this.name = this.products[0].category_name;
         })
         .catch((error) => console.log(error));
     },

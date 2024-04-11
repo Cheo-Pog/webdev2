@@ -1,13 +1,11 @@
 <template>
-    <div class="" @click="isOpen = !isOpen">
-        <a class="nav-link" href="#">
-            Products</a>
-        <div class="nav-item" v-for="category in categories" :key="category.id" :value="category.id" v-if="isOpen">
-            <router-link :to="'/products/category/' + category.id">
+    <router-link v-for="category in categories" :key="category.id" :to="'/products/category/' + category.id">
+        <div class="nav-item" :value="category.id">
+            <li class="dropdown-item nav-item">
                 {{ category.name }}
-            </router-link>
+            </li>
         </div>
-    </div>
+    </router-link>
 </template>
 
 <script>
@@ -17,7 +15,6 @@ export default {
     data() {
         return {
             categories: [],
-            isOpen: false,
         };
     },
     mounted() {

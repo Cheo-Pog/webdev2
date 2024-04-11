@@ -8,7 +8,6 @@
           v-for="product in randomProducts"
           :key="product.id"
           :product="product"
-          @update="update"
         />  
         </div>  
   </section>
@@ -30,10 +29,10 @@ export default {
     };
   },
   mounted() {
-    this.update();
+    this.init();
   },
   methods: {
-    update() {
+    init() {
       axios
         .get("/products")
         .then((result) => {

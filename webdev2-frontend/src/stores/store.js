@@ -5,9 +5,7 @@ export const useStore = defineStore('store',
     {
         state: () => ({
             token: '',
-            email: '',
-            name: '',
-            id: ''
+            user: {},
         }),
         getters: {
             isLoggedIn: (state) => state.token != '',
@@ -20,14 +18,9 @@ export const useStore = defineStore('store',
                         password: password
                     })
                     .then(result => {
-                        console.log(result);
-                        alert(result.data);
                         axios.defaults.headers.common['Authorization'] = "Bearer " + result.data;
                         this.token = result.data[0];
-                        this.id = result.data[1];
-                        this.name = result.data[2];
-                        this.email = email;
-                        localStorage.setItem('token', result.data);
+                        this.user = result.data[1];
                         localStorage.setItem('email', email);
                         resolve();
                     })

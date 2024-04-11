@@ -35,11 +35,11 @@ $router->get('/users', 'UserController@getAll');
 $router->get('/users/(\d+)', 'UserController@getOne');
 
 // routes for the cart endpoint
-$router->get('/cart', 'CartController@getAll');
-$router->get('/cart/(\d+)', 'CartController@getOne');
-$router->post('/cart', 'CartController@create');
-$router->put('/cart/(\d+)', 'CartController@update');
-$router->delete('/cart/(\d+)', 'CartController@delete');
+$router->get('/shoppingcart', 'CartController@getAll');
+$router->get('/shoppingcart/(\d+)', 'CartController@getOne');
+$router->post('/shoppingcart', 'CartController@create');
+$router->put('/shoppingcart/(\d+)', 'CartController@update');
+$router->delete('/shoppingcart/(\d+)', 'CartController@delete');
 
 
 // Run it!

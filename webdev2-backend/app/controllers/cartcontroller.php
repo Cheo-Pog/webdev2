@@ -1,6 +1,7 @@
 <?php
 
 namespace Controllers;
+use Models\ShoppingCart;
 use Services\CartService;
 
 use Exception;
@@ -27,46 +28,46 @@ class CartController extends Controller
             $limit = $_GET["limit"];
         }
 
-        $categories = $this->service->getAll($offset, $limit);
+        $shoppingcart = $this->service->getAll($offset, $limit);
 
-        $this->respond($categories);
+        $this->respond($shoppingcart);
     }
 
     public function getOne($id)
     {
-        $category = $this->service->getOne($id);
+        $shoppingcart = $this->service->getOne($id);
 
         // we might need some kind of error checking that returns a 404 if the product is not found in the DB
-        if (!$category) {
-            $this->respondWithError(404, "Category not found");
+        if (!$shoppingcart) {
+            $this->respondWithError(404, "Shoppingcart not found");
             return;
         }
 
-        $this->respond($category);
+        $this->respond($shoppingcart);
     }
 
     public function create()
     {
         try {
-            $category = $this->createObjectFromPostedJson("Models\\Category");
-            $this->service->insert($category);
+            $shoppingcart = $this->createObjectFromPostedJson(ShoppingCart::class);
+            $this->service->insert($shoppingcart);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond($category);
+        $this->respond($shoppingcart);
     }
 
     public function update($id)
     {
         try {
-            $category = $this->createObjectFromPostedJson("Models\\Category");
-            $this->service->update($category, $id);
+            $shoppingcart = $this->createObjectFromPostedJson("Models\\shoppingcart");
+            $this->service->update($shoppingcart, $id);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
         }
 
-        $this->respond($category);
+        $this->respond($shoppingcart);
     }
 
     public function delete($id)

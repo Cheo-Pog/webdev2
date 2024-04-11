@@ -5,6 +5,7 @@ namespace Repositories;
 use PDO;
 use PDOException;
 use Repositories\Repository;
+use Models\ShoppingCart;
 
 class CartRepository extends Repository
 {
@@ -22,7 +23,7 @@ class CartRepository extends Repository
             }
             $stmt->execute();
 
-            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Shoppingcart');
+            $stmt->setFetchMode(PDO::FETCH_CLASS, ShoppingCart::class);
             $shoppingcarts = $stmt->fetchAll();
 
             return $shoppingcarts;
@@ -34,14 +35,31 @@ class CartRepository extends Repository
     function getOne($id)
     {
         try {
-            $stmt = $this->connection->prepare("SELECT id, user_id, product_id, quantity FROM shoppingcarts WHERE id = :id");
+            $stmt = $this->connection->prepare("SELECT id, user_id, product_id, quantity FROM shoppingcarts WHERE user_id = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
-
-            $stmt->setFetchMode(PDO::FETCH_CLASS, 'Models\Shoppingcart');
-            $shoppingcart = $stmt->fetch();
+            $stmt->setFetchMode(PDO::FETCH_CLASS, ShoppingCart::class);
+            $shoppingcart = $stmt->fetchAll();
 
             return $shoppingcart;
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+    function checkDuplicate($item)
+    {
+        try {
+            $stmt = $this->connection->prepare("SELECT id, user_id, product_id, quantity FROM shoppingcarts WHERE user_id = :user_id AND product_id = :product_id");
+            $stmt->bindParam(':user_id', $item->user_id);
+            $stmt->bindParam(':product_id', $item->product_id);
+            $stmt->execute();
+
+            $stmt->setFetchMode(PDO::FETCH_CLASS, ShoppingCart::class);
+            if ($stmt->rowCount() > 0) {
+                return $stmt->fetch();
+            }
+
+            return null;
         } catch (PDOException $e) {
             echo $e;
         }
@@ -82,7 +100,7 @@ class CartRepository extends Repository
     function delete($id)
     {
         try {
-            $stmt = $this->connection->prepare("DELETE FROM shoppingcarts WHERE id = :id");
+            $stmt = $this->connection->prepare("DELETE FROM shoppingcarts WHERE user_id = :id");
             $stmt->bindParam(':id', $id);
             $stmt->execute();
             return;

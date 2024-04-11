@@ -5,14 +5,41 @@
         <li class="nav-item">
           <router-link to="/" class="nav-link" active-class="active">Home</router-link>
         </li>
-        <li class="nav-item dropdown" v-if="isLoggedIn">
-          <categoryList />
+        <div class="dropdown">
+          <li class="nav-item">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Products
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <categoryList />
+            </ul>
+          </li>
+        </div>
+        <li class="nav-item right" v-if="isLoggedIn">
+          <router-link to="/shoppingcart" class="nav-link" active-class="active">cart</router-link>
         </li>
-        <li class="nav-item right" v-if="!isLoggedIn">
-          <router-link to="/login" class="nav-link" active-class="active">Login</router-link>
-        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <div class="dropdown" v-if="isLoggedIn">
+          <li class="nav-item d-flex">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              {{ name }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdown">
+              <li class="nav-item dropdown-item">
+                <router-link to="/profile" class="nav-link" active-class="active"
+                  style="color: black;">Profile</router-link>
+              </li>
+              <li class="nav-item dropdown-item">
+                <div class="nav-link" @click="logout()" style="color: black;">Logout</div>
+              </li>
+            </ul>
+          </li>
+        </div>
         <li class="nav-item right" v-else>
-          <router-link to="/createproduct" class="nav-link" active-class="active">{{ name }}</router-link>
+          <router-link to="/login" class="nav-link" active-class="active">Login</router-link>
         </li>
       </ul>
     </div>
@@ -30,13 +57,13 @@ export default {
   data() {
     return {
       isLoggedIn: this.store.isLoggedIn,
-      name: this.store.name,
+      name: this.store.user.firstname,
     }
   },
   watch: {
-    '$route': function() {
+    '$route': function () {
       this.isLoggedIn = this.store.isLoggedIn;
-      this.name = this.store.name;
+      this.name = this.store.user.firstname;
     }
   },
   setup() {
@@ -47,12 +74,15 @@ export default {
     logout() {
       this.store.logout();
       this.$router.replace("/");
+
+      this.$nextTick(() => {
+        //zieke virus anders idk
+        this.isLoggedIn = this.store.isLoggedIn;
+        this.name = this.store.user.firstname;
+      });
     }
   }
 };
 </script>
 
-<style scoped>
-
-
-</style>
+<style scoped></style>

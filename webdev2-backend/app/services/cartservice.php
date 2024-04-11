@@ -20,7 +20,12 @@ class CartService {
         return $this->repository->getOne($id);
     }
 
-    public function insert($item) {       
+    public function insert($item) {
+        $check = $this->repository->checkDuplicate($item);
+        if (isset($check)) {
+            $item->quantity = $item->quantity + $check->quantity;
+            return $this->repository->update($item, $check->id);
+        }
         return $this->repository->insert($item);        
     }
 

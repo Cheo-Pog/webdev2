@@ -12,34 +12,34 @@
         <span class="price float-end">{{ product.price }}</span>
       </div>
       <div class="card-footer">
-        <button class="btn btn-warning" @click="editProduct(product.id)">Edit</button>&nbsp;&nbsp;
-        <button class="btn btn-danger" @click="deleteProduct(product.id)">Delete</button>
+        <button class="btn btn-primary" @click="addToCart(product.id)">Add to cart</button>&nbsp;&nbsp;
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { useStore } from "../../stores/store";
 import axios from "axios";
 
 export default {
   name: "ProductListItem",
+  setup() {
+    const store = useStore();
+    return { store };
+  },
   props: {
     product: Object,
   },
   methods: {
-    deleteProduct(id) {
+    addToCart(id) {
       axios
-        .delete("http://localhost/products/" + id)
+        .post("http://localhost/shoppingcart", { user_id: this.store.user.id ,product_id: id, quantity: 1 })
         .then((result) => {
           console.log(result);
-          this.$emit('update')
         })
         .catch((error) => console.log(error));
     },
-    editProduct(id) {
-      this.$router.push('/editproduct/' + id);
-    }
   },
 };
 </script>
