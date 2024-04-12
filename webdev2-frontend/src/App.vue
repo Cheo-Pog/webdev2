@@ -5,12 +5,17 @@
 
 <script>
 import Navigation from './components/Navigation.vue'
+import { useStore } from './stores/store'
 
 export default {
   name: "App",
+  setup() {
+    const store = useStore();
+    return { store };
+  },
   components: {
     Navigation
-  }
+  },
 };
 </script>
 

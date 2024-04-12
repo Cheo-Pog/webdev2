@@ -2,7 +2,8 @@
   <section>
     <div class="container">
       <form ref="form">
-        <h2 class="mt-3 mt-lg-5">Create a product</h2>
+        <h2 class="mt-3 mt-lg-5" v-if="isEdit">Edit a product</h2>
+        <h2 class="mt-3 mt-lg-5" v-else>Create a product</h2>
         <h5 class="mb-4"></h5>
 
         <div class="input-group mb-3">
@@ -34,21 +35,24 @@
             <option
               v-for="category in categories"
               :key="category.id"
-              :value="category.id">
+              :value="category.id"
+            >
               {{ category.name }}
             </option>
           </select>
         </div>
 
         <div class="input-group mt-4">
-          <button type="button" class="btn btn-primary" @click="addProduct">
-            Create product
+          <button type="button" class="btn btn-primary" v-if="isEdit" @click="updateProduct">
+            Save changes
+          </button>
+          <button type="button" class="btn btn-primary" v-else @click="createProduct">
+            Create 
           </button>
           <button
             type="button"
             class="btn btn-danger"
-            @click="this.$router.push('/products')"
-          >
+            @click="this.$router.push('/admin/categories/edit/' + Number(product.category_id))">
             Cancel
           </button>
         </div>
@@ -58,42 +62,62 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "../../../axios-auth.js";
 
 export default {
-  name: "CreateProduct",
+  name: "EditProduct",
+  props: {
+    id: Number,
+  },
   data() {
     return {
       product: {
+        id: 0,
         name: "",
-        price: "",
+        price: 0.0,
         description: "",
         image: "",
         category_id: 0,
       },
       categories: [],
+      isEdit: true,
     };
   },
   methods: {
-    addProduct() {
+    updateProduct() {
       axios
-        .post("http://localhost/products", this.product)
+        .put("/products/" + this.product.id, this.product)
         .then((res) => {
           console.log(res.data);
           this.$refs.form.reset();
-          this.$router.push("/products");
+          this.$router.push("/admin/categories/edit/" + this.product.category_id);
+        })
+        .catch((error) => console.log(error));
+    },
+    createProduct() {
+      axios
+        .post("/products", this.product)
+        .then((res) => {
+          this.$router.push("/admin/categories/edit/" + this.product.category_id);
         })
         .catch((error) => console.log(error));
     },
   },
   mounted() {
     axios
-      .get("http://localhost/categories")
+      .get("/categories")
       .then((result) => {
         console.log(result);
         this.categories = result.data;
+        axios
+          .get("/products/" + this.id)
+          .then((result) => {
+            this.product = result.data;
+          })
+          .catch((error) => console.log(error));
       })
       .catch((error) => console.log(error));
+      this.isEdit = window.location.href.includes("edit");
   },
 };
 </script>

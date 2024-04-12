@@ -13,18 +13,18 @@ class UserRepository extends Repository
     {
         try {
             // retrieve the user with the given username
-            $stmt = $this->connection->prepare("SELECT id, firstname, lastname, password, email FROM users WHERE email = :email");
+            $stmt = $this->connection->prepare("SELECT id, firstname, lastname, password, rank, email FROM users WHERE email = :email");
             $stmt->bindParam(':email', $email);
             $stmt->execute();
 
             $stmt->setFetchMode(PDO::FETCH_CLASS, User::class);
             $user = $stmt->fetch();
 
+            if (!$user)
+                return false;
             // verify if the password matches the hash in the database
             if(!$this->verifyPassword($password, $user->password))
                 return false;
-
-
             // do not pass the password hash to the caller
             $user->password = "";
 
@@ -57,13 +57,54 @@ class UserRepository extends Repository
     function getOne($id)
     {
         try {
-            $query = "SELECT id, firstname, lastname, email, rank FROM user WHERE id = :id";
+            $query = "SELECT id, firstname, lastname, email, password, rank FROM users WHERE id = :id";
             $stmt = $this->connection->prepare($query);
             $stmt->bindParam(':id', $id);
             $stmt->execute();
 
             $stmt->setFetchMode(PDO::FETCH_CLASS, User::class);
             return $stmt->fetch();
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+    function update($user, $id){
+        try {
+            $query = "UPDATE users SET firstname = :firstname, lastname = :lastname, email = :email, password = :password, rank = :rank WHERE id = :id";
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindParam(':firstname', $user->firstname);
+            $stmt->bindParam(':lastname', $user->lastname);
+            $stmt->bindParam(':email', $user->email);
+            $stmt->bindParam(':password', $user->password);
+            $stmt->bindParam(':rank', $user->rank);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            return $stmt->rowCount();
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+    function insert($user){
+        try {
+            $query = "INSERT INTO users (firstname, lastname, email, password) VALUES (:firstname, :lastname, :email, :password)";
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindParam(':firstname', $user->firstname);
+            $stmt->bindParam(':lastname', $user->lastname);
+            $stmt->bindParam(':email', $user->email);
+            $stmt->bindParam(':password', $user->password);
+            $stmt->execute();
+            return $this->getOne($this->connection->lastInsertId());
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
+    function delete($id){
+        try {
+            $query = "DELETE FROM users WHERE id = :id";
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            return $stmt->rowCount();
         } catch (PDOException $e) {
             echo $e;
         }

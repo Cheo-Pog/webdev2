@@ -77,7 +77,7 @@ export default {
     },
     checkout() {
       axios
-        .delete("/shoppingcart/" + this.id)
+        .delete("/shoppingcart/" + this.id, { data: { total_price: this.totalprice } })
         .then((result) => {
           this.cart = [];
           this.totalprice = 0;

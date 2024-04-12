@@ -33,8 +33,8 @@ class CartService {
         return $this->repository->update($item, $id);        
     }
 
-    public function delete($item) {       
-        return $this->repository->delete($item);        
+    public function delete($shoppingcart, $total_price) {       
+        return $this->repository->delete($shoppingcart, $total_price);        
     }
 }
 

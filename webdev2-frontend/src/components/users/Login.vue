@@ -6,14 +6,19 @@
           <form>
             <div class="mb-3">
               <label for="inputemail" class="form-label">Email</label>
-              <input id="inputemial" type="text" v-model="email" class="form-control"/>
+              <input id="inputemial" type="text" v-model="email" class="form-control" />
             </div>
             <div class="mb-3">
               <label for="inputPassword" class="form-label">Password</label>
-              <input type="password" class="form-control" v-model="password" id="inputPassword"/>
+              <input type="password" class="form-control" v-model="password" id="inputPassword" />
             </div>
-            <div class="alert alert-danger" v-if="errorMessage">{{errorMessage}}</div>
+            <div class="alert alert-danger" v-if="errorMessage">{{ errorMessage }}</div>
             <button type='button' class="btn btn-primary" @click="login">Submit</button>
+            <div>
+              <p>Don't have an account?
+                <router-link to="/register">Register</router-link>
+              </p>
+            </div>
           </form>
         </div>
       </div>
@@ -23,8 +28,8 @@
 
 <script>
 
-import { useStore } from '../stores/store';
-import axios from '../axios-auth';
+import { useStore } from '../../stores/store';
+import axios from '../../axios-auth';
 
 export default {
   name: "Login",
@@ -42,16 +47,15 @@ export default {
   methods: {
     login() {
       this.store.login(this.email, this.password)
-          .then(result => {
-           this.$router.replace("/")
-          })
-          .catch(error => this.errorMessage = error);
+        .then(result => {
+          this.password = "";
+          this.$router.replace("/")
+        })
+        .catch(error => this.errorMessage = error);
     }
   }
 }
-;
+  ;
 </script>
 
-<style>
-
-</style>
+<style></style>

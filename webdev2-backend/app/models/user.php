@@ -7,7 +7,7 @@ class User {
     public string $email;
     public string $firstname;
     public string $lastname;
-    public string $password;
+    public $password;
     public string $rank;
 
 }

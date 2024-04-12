@@ -89,7 +89,7 @@ class ProductRepository extends Repository
     function update($product, $id)
     {
         try {
-            $stmt = $this->connection->prepare("UPDATE products SET name = :name, price = :price, description = :description, image = :image, category_id = :category_id WHERE id = ?");
+            $stmt = $this->connection->prepare("UPDATE products SET name = :name, price = :price, description = :description, image = :image, category_id = :category_id WHERE id = :id");
 
             $stmt->bindParam(':name', $product->name);
             $stmt->bindParam(':price', $product->price);

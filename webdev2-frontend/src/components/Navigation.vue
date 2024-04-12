@@ -27,10 +27,14 @@
               aria-expanded="false">
               {{ name }}
             </a>
-            <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdown">
+            <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdown" >
               <li class="nav-item dropdown-item">
                 <router-link to="/profile" class="nav-link" active-class="active"
                   style="color: black;">Profile</router-link>
+              </li>
+              <li class="nav-item dropdown-item">
+                <router-link to="/admin" class="nav-link" active-class="active"
+                  style="color: black;">Admin</router-link>
               </li>
               <li class="nav-item dropdown-item">
                 <div class="nav-link" @click="logout()" style="color: black;">Logout</div>
@@ -38,8 +42,11 @@
             </ul>
           </li>
         </div>
-        <li class="nav-item right" v-else>
+        <li class="nav-item d-flex" v-if="!isLoggedIn">
           <router-link to="/login" class="nav-link" active-class="active">Login</router-link>
+        </li>
+        <li class="nav-item d-flex" v-if="!isLoggedIn">
+          <router-link to="/register" class="nav-link" active-class="active">Register</router-link>
         </li>
       </ul>
     </div>

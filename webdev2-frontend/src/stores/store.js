@@ -18,10 +18,12 @@ export const useStore = defineStore('store',
                         password: password
                     })
                     .then(result => {
-                        axios.defaults.headers.common['Authorization'] = "Bearer " + result.data;
+                        axios.defaults.headers.common['Authorization'] = "Bearer " + result.data[0];
                         this.token = result.data[0];
                         this.user = result.data[1];
-                        localStorage.setItem('email', email);
+                        console.log(this.user);
+                        localStorage.setItem('token', this.token);
+                        localStorage.setItem('user', JSON.stringify(this.user));
                         resolve();
                     })
                     .catch(error => reject(error.response.data.errorMessage));
@@ -29,19 +31,24 @@ export const useStore = defineStore('store',
             },
             autoLoggin() {
                 const token = localStorage.getItem('token');
-                const email = localStorage.getItem('email');
+                let user = JSON.parse(localStorage.getItem('user'));
                 if (token) {
                     this.token = token;
-                    this.email = email;
+                    this.user = user;
                     axios.defaults.headers.common['Authorization'] = "Bearer " + token;
                 }
             },
             logout() {
                     this.token = '';
-                    this.email = '';
+                    this.user = '';
                     localStorage.removeItem('token');
-                    localStorage.removeItem('email');
+                    localStorage.removeItem('user');
                     delete axios.defaults.headers.common['Authorization'];
+            },
+            setUser(user){
+                user.password = '';
+                this.user = user;
+                localStorage.setItem('user', JSON.stringify(this.user));
             }
         }
     })

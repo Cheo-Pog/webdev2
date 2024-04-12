@@ -1,11 +1,11 @@
 <template>
     <tr>
         <td>
-            {{ product.name }}
+            {{ item.product.name }}
         </td>
         <td>
             €
-            {{ product.price }}
+            {{ item.product.price }}
         </td>
         <td>
             <button class="btn btn-primary quantity" @click="subtrackt()">-</button>
@@ -15,7 +15,7 @@
             <button class="btn btn-primary quantity" @click="add()">+</button>
         </td>
         <td>
-            {{ totalprice }}
+            €{{ totalprice }}
         </td>
         <td>
             <button class="btn btn-danger remove" @click="remove()">Remove</button>
@@ -33,23 +33,16 @@ export default {
     },
     data() {
         return {
-            product: {},
             totalprice: 0,
         };
     },
     mounted() {
+        this.totalprice = (this.item.product.price * this.item.quantity).toFixed(2);
         this.init();
     },
     methods: {
         init() {
-            axios
-                .get("/products/" + this.item.product_id)
-                .then((result) => {
-                    this.product = result.data;
-                    this.totalprice = (this.product.price * this.item.quantity).toFixed(2);
-                    this.$emit("update", this.totalprice);
-                })
-                .catch((error) => console.log(error));
+            this.$emit("update", this.totalprice);
         },
         remove() {
             axios
@@ -64,8 +57,8 @@ export default {
                 axios
                     .put("/shoppingcart/" + this.item.id, { quantity: this.item.quantity - 1 })
                     .then((result) => {
-                        this.totalprice = (this.product.price * (this.item.quantity -1)).toFixed(2);
-                        this.$emit("update", -this.product.price);
+                        this.totalprice = (this.item.product.price * (this.item.quantity -1)).toFixed(2);
+                        this.$emit("update", -this.item.product.price);
                     })
                     .catch((error) => console.log(error));
             }else{
@@ -76,8 +69,8 @@ export default {
             axios
                 .put("/shoppingcart/" + this.item.id, { quantity: this.item.quantity + 1 })
                 .then((result) => {
-                    this.totalprice = (this.product.price * (this.item.quantity + 1)).toFixed(2);
-                    this.$emit("update", this.product.price);
+                    this.totalprice = (this.item.product.price * (this.item.quantity + 1)).toFixed(2);
+                    this.$emit("update", this.item.product.price);
                 })
                 .catch((error) => console.log(error));
         },

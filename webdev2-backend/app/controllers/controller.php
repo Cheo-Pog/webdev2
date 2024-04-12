@@ -9,33 +9,34 @@ use \Firebase\JWT\Key;
 class Controller
 {
     function checkForJwt() {
-         // Check for token header
-         if(!isset($_SERVER['HTTP_AUTHORIZATION'])) {
+        // Check for token header
+        if(!isset($_SERVER['HTTP_AUTHORIZATION'])) {
             $this->respondWithError(401, "No token provided");
-            return;
+            return null;
         }
-
+    
         // Read JWT from header
         $authHeader = $_SERVER['HTTP_AUTHORIZATION'];
         // Strip the part "Bearer " from the header
         $arr = explode(" ", $authHeader);
         $jwt = $arr[1];
-
+    
         // Decode JWT
         $secret_key = "Nekoarc";
-
+    
         if ($jwt) {
             try {
-                $decoded = JWT::decode($jwt, new Key($secret_key, 'HS256'));
-                // username is now found in
-                // echo $decoded->data->username;
+                // Decode the JWT, passing $headers by reference
+                $decoded = JWT::decode($jwt, new KEY($secret_key, 'HS256'));
                 return $decoded;
             } catch (Exception $e) {
                 $this->respondWithError(401, $e->getMessage());
-                return;
+                return null;
             }
         }
     }
+    
+    
 
     function respond($data)
     {
@@ -65,7 +66,7 @@ class Controller
             if(is_object($value)) {
                 continue;
             }
-            $object->{$key} = $value;
+            $object->{$key} = htmlspecialchars($value);
         }
         return $object;
     }

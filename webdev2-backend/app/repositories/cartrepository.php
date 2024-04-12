@@ -6,6 +6,7 @@ use PDO;
 use PDOException;
 use Repositories\Repository;
 use Models\ShoppingCart;
+use Models\Product;
 
 class CartRepository extends Repository
 {
@@ -40,6 +41,14 @@ class CartRepository extends Repository
             $stmt->execute();
             $stmt->setFetchMode(PDO::FETCH_CLASS, ShoppingCart::class);
             $shoppingcart = $stmt->fetchAll();
+
+            foreach ($shoppingcart as $item) {
+                $stmt = $this->connection->prepare("SELECT id, name, price, description, image FROM products WHERE id = :id");
+                $stmt->bindParam(':id', $item->product_id);
+                $stmt->execute();
+                $stmt->setFetchMode(PDO::FETCH_CLASS, Product::class);
+                $item->product = $stmt->fetch();
+            }
 
             return $shoppingcart;
         } catch (PDOException $e) {
@@ -97,13 +106,28 @@ class CartRepository extends Repository
         }
     }
 
-    function delete($id)
+    function delete($shoppingcart, $total_price)
     {
         try {
-            $stmt = $this->connection->prepare("DELETE FROM shoppingcarts WHERE user_id = :id");
-            $stmt->bindParam(':id', $id);
+            $stmt = $this->connection->prepare("INSERT INTO orders (user_id, total_price) value (:user_id, :total_price)");
+            $stmt->bindParam(':user_id', $shoppingcart[0]->user_id);
+            $stmt->bindParam(':total_price', $total_price);
             $stmt->execute();
-            return;
+    
+            $orderId = $this->connection->lastInsertId();
+    
+            foreach ($shoppingcart as $item) {
+                $stmt = $this->connection->prepare("INSERT INTO order_items (order_id, product_id, quantity, price) VALUES (:order_id, :product_id, :quantity, :price)");
+                $stmt->bindParam(':order_id', $orderId);
+                $stmt->bindParam(':product_id', $item->product_id);
+                $stmt->bindParam(':quantity', $item->quantity);
+                $stmt->bindParam(':price', $item->product->price);
+                $stmt->execute();
+    
+                $stmt = $this->connection->prepare("DELETE FROM shoppingcarts WHERE user_id = :user_id");
+                $stmt->bindParam(':user_id', $item->user_id);
+                $stmt->execute();
+            }
         } catch (PDOException $e) {
             echo $e;
         }

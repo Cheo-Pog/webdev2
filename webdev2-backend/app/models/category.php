@@ -7,5 +7,3 @@ class Category {
     public string $name;
   
 }
-
-?>

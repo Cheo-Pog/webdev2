@@ -23,6 +23,25 @@ class UserService {
     public function getOne($id) {
         return $this->repository->getOne($id);
     }
+    public function update($item, $id) {
+        $check = $this->repository->getOne($id);
+        if(password_verify($item->password, $check->password)){
+            $item->password = password_hash($item->password, PASSWORD_DEFAULT);
+            return $this->repository->update($item, $id);        
+        }
+        return false;
+    }
+    public function updateAdmin($item, $id) {
+        $item->password = password_hash($item->password, PASSWORD_DEFAULT);
+        return $this->repository->update($item, $id);        
+    }
+    public function register($item) {
+        $item->password = password_hash($item->password, PASSWORD_DEFAULT);
+        return $this->repository->insert($item);        
+    }
+    public function delete($id) {
+        return $this->repository->delete($id);        
+    }
 }
 
 ?>
