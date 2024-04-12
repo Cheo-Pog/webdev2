@@ -1,7 +1,7 @@
 <template>
   <section>
     <div class="container">
-      <form ref="form">
+      <form ref="form" enctype="multipart/form-data">
         <h2 class="mt-3 mt-lg-5" v-if="isEdit">Edit a product</h2>
         <h2 class="mt-3 mt-lg-5" v-else>Create a product</h2>
         <h5 class="mb-4"></h5>
@@ -25,8 +25,8 @@
         </div>
 
         <div class="input-group mb-3">
-          <span class="input-group-text">Image URL</span>
-          <input type="text" class="form-control" v-model="product.image" />
+          <span class="input-group-text">Image</span>
+          <input type="file" class="form-control" @change="uploadFile" />
         </div>
 
         <div class="input-group mb-3">
@@ -99,6 +99,17 @@ export default {
         .post("/products", this.product)
         .then((res) => {
           this.$router.push("/admin/categories/edit/" + this.product.category_id);
+        })
+        .catch((error) => console.log(error));
+    },
+    uploadFile(event) {
+      const file = event.target.files[0];
+      const formData = new FormData();
+      formData.append("image", file);
+      axios
+        .post("/upload", formData)
+        .then((res) => {
+          this.product.image = res.data;
         })
         .catch((error) => console.log(error));
     },

@@ -32,9 +32,9 @@
                 <router-link to="/profile" class="nav-link" active-class="active"
                   style="color: black;">Profile</router-link>
               </li>
-              <li class="nav-item dropdown-item">
+              <li class="nav-item dropdown-item" v-if="rank >= 2">
                 <router-link to="/admin" class="nav-link" active-class="active"
-                  style="color: black;">Admin</router-link>
+                  style="color: black;">admin</router-link>
               </li>
               <li class="nav-item dropdown-item">
                 <div class="nav-link" @click="logout()" style="color: black;">Logout</div>
@@ -65,12 +65,14 @@ export default {
     return {
       isLoggedIn: this.store.isLoggedIn,
       name: this.store.user.firstname,
+      rank: Number(this.store.user.rank),
     }
   },
   watch: {
     '$route': function () {
       this.isLoggedIn = this.store.isLoggedIn;
       this.name = this.store.user.firstname;
+      this.rank = Number(this.store.user.rank);
     }
   },
   setup() {

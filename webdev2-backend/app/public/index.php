@@ -48,6 +48,9 @@ $router->delete('/shoppingcart/(\d+)', 'CartController@delete');
 $router->get('/orders', 'OrderController@getAll');
 $router->get('/orders/(\d+)', 'OrderController@getOne');
 
+// routes for upload endpoint
+$router->post('/upload', 'Controller@upload');
+
 
 // Run it!
 $router->run();

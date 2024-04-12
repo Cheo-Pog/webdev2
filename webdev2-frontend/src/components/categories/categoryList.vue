@@ -20,6 +20,11 @@ export default {
     mounted() {
         this.update();
     },
+    watch: {
+        '$route': function () {
+            this.update();
+        }
+    },
     methods: {
         update() {
             axios

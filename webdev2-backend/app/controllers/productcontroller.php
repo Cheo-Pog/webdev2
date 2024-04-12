@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Exception;
 use Services\ProductService;
+use Models\Product;
 
 class ProductController extends Controller
 {
@@ -64,7 +65,8 @@ class ProductController extends Controller
     public function create()
     {
         try {
-            $product = $this->createObjectFromPostedJson("Models\\Product");
+            $product = $this->createObjectFromPostedJson(Product::class);
+            $product->image = $this->upload();
             $product = $this->service->insert($product);
 
         } catch (Exception $e) {

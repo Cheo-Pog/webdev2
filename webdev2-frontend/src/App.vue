@@ -11,6 +11,7 @@ export default {
   name: "App",
   setup() {
     const store = useStore();
+    store.autoLoggin();
     return { store };
   },
   components: {
