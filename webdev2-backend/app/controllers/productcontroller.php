@@ -64,9 +64,9 @@ class ProductController extends Controller
 
     public function create()
     {
+        if($this->checkJWT()){return;}
         try {
             $product = $this->createObjectFromPostedJson(Product::class);
-            $product->image = $this->upload();
             $product = $this->service->insert($product);
 
         } catch (Exception $e) {
@@ -78,8 +78,9 @@ class ProductController extends Controller
 
     public function update($id)
     {
+        if($this->checkJWT()){return;}
         try {
-            $product = $this->createObjectFromPostedJson("Models\\Product");
+            $product = $this->createObjectFromPostedJson(Product::class);
             $product = $this->service->update($product, $id);
 
         } catch (Exception $e) {
@@ -91,6 +92,11 @@ class ProductController extends Controller
 
     public function delete($id)
     {
+        if($this->checkJWT()){return;}
+        $decoded = $this->checkForJwt();
+        if (!$decoded) {
+            return;
+        }
         try {
             $this->service->delete($id);
         } catch (Exception $e) {

@@ -36,7 +36,7 @@ class OrderRepository extends Repository
         }
     }
     function getOrderItems($order){
-                $stmt = $this->connection->prepare("SELECT id, order_id, product_id, quantity, price FROM order_items WHERE order_id = :id");
+                $stmt = $this->connection->prepare("SELECT order_items.id, order_items.order_id, order_items.product_id, order_items.quantity, order_items.price, products.name as product_name FROM order_items INNER join products ON order_items.product_id = products.id WHERE order_items.order_id = :id");
                 $stmt->bindParam(':id', $order->id);
                 $stmt->execute();
                 $stmt->setFetchMode(PDO::FETCH_CLASS, OrderItems::class);

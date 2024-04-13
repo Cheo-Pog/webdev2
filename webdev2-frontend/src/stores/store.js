@@ -9,6 +9,7 @@ export const useStore = defineStore('store',
         }),
         getters: {
             isLoggedIn: (state) => state.token != '',
+            isAdmin: (state) => state.user.rank == 2,
         },
         actions: {
             login(email, password) {

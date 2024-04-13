@@ -1,4 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useStore } from '../stores/store';
+
+const checkUserRank = (to, from, next) => {
+  const store = useStore();
+  if (store.isLoggedIn && store.isAdmin) {
+    next();
+  } else {
+    next('/');
+  }
+}
+
 
 import Home from '../components/Home.vue';
 import ProductList from '../components/products/ProductList.vue';
@@ -22,22 +33,22 @@ const router = createRouter({
     { path: '/', component: Home },
     { path: '/products', component: ProductList },
     { path: '/login', component: Login },
-    { path: '/admin/products/edit/:id', component: EditProduct, props: true },
-    { path: '/admin/products/create', component: EditProduct, props: false},
-    { path: '/products/category/:id', component: ProductList},
-    { path: '/shoppingcart', component: shoppingcart},
-    { path: '/profile', component: Profile},
-    { path: '/register', component: Register},
-    { path: '/admin', component: AdminDashboard},
-    { path: '/admin/products', component: productIndex},
-    { path: '/admin/categories', component: CategoryIndex},
-    { path: '/admin/categories/edit/:id', component: EditCategory, props: true},
-    { path: '/admin/categories/create', component: EditCategory, props: false},
-    { path: '/admin/users', component: UsersIndex},
-    { path: '/admin/users/edit/:id', component: Profile, props: true},
-    { path: '/admin/users/create', component: Register, props: false},
-    { path: '/admin/orders', component: OrderIndex},
-    { path: '/admin/orders/view/:id', component: OrderView, props: true},
+    { path: '/products/category/:id', component: ProductList },
+    { path: '/shoppingcart', component: shoppingcart },
+    { path: '/profile', component: Profile },
+    { path: '/register', component: Register },
+    { path: '/admin', component: AdminDashboard, beforeEnter: checkUserRank },
+    { path: '/admin/products/edit/:id', component: EditProduct, props: true, beforeEnter: checkUserRank },
+    { path: '/admin/products/create', component: EditProduct, props: false, beforeEnter: checkUserRank },
+    { path: '/admin/products', component: productIndex, beforeEnter: checkUserRank},
+    { path: '/admin/categories', component: CategoryIndex, beforeEnter: checkUserRank},
+    { path: '/admin/categories/edit/:id', component: EditCategory, props: true, beforeEnter: checkUserRank},
+    { path: '/admin/categories/create', component: EditCategory, props: false, beforeEnter: checkUserRank},
+    { path: '/admin/users', component: UsersIndex, beforeEnter: checkUserRank},
+    { path: '/admin/users/edit/:id', component: Profile, props: true, beforeEnter: checkUserRank},
+    { path: '/admin/users/create', component: Register, props: false, beforeEnter: checkUserRank},
+    { path: '/admin/orders', component: OrderIndex, beforeEnter: checkUserRank},
+    { path: '/admin/orders/view/:id', component: OrderView, props: true, beforeEnter: checkUserRank},
   ]
 })
 

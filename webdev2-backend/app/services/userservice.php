@@ -36,6 +36,10 @@ class UserService {
         return $this->repository->update($item, $id);        
     }
     public function register($item) {
+        $check = $this->repository->getByEmail($item->email);
+        if($check){
+            return 0;
+        }
         $item->password = password_hash($item->password, PASSWORD_DEFAULT);
         return $this->repository->insert($item);        
     }

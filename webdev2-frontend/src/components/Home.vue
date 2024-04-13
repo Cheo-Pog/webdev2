@@ -1,15 +1,17 @@
 <template>
   <section>
     <div class="container">
-      <h2 class="mt-3 mt-lg-5">Welcome to the homepage</h2>
+      <h2 class="mt-3 mt-lg-5 text-center">Welcome to the homepage</h2>
+      <p class="text-center">Check out some of my products!</p>
     </div>
-    <div class="row mt-3">
-    <product-list-item
-          v-for="product in randomProducts"
-          :key="product.id"
-          :product="product"
-        />  
-        </div>  
+    <div class="row mt-3 margin">
+      <product-list-item
+        v-for="product in randomProducts"
+        :key="product.id"
+        :product="product"
+        class="col-md-6"
+      />  
+    </div>  
   </section>
 </template>
 
@@ -37,7 +39,7 @@ export default {
         .get("/products")
         .then((result) => {
           this.products = result.data;
-          this.randomProducts = this.getRandomProducts(this.products, 3);
+          this.randomProducts = this.getRandomProducts(this.products, 6);
         })
         .catch((error) => console.log(error));
     },
@@ -61,4 +63,8 @@ export default {
 </script>
 
 <style>
+.margin {
+  margin-left: 5%;
+  margin-right: 5%;
+}
 </style>

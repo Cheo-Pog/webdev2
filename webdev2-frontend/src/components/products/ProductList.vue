@@ -1,8 +1,9 @@
 <template>
   <section>
     <div class="container">
-      <h2 class="mt-3 mt-lg-5">Here are some of my {{ name}}</h2>
-      <div class="row mt-3">
+      <h2 class="mt-3 mt-lg-5 text-center">Here are some of my {{ name}}</h2>
+    </div>
+      <div class="row mt-3 margin">
         <product-list-item
           v-for="product in products"
           :key="product.id"
@@ -10,7 +11,6 @@
           @update="update"
         />
       </div>
-    </div>
   </section>
 </template>
 

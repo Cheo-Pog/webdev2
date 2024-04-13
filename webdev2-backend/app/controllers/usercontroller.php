@@ -66,37 +66,35 @@ class UserController extends Controller
 
     public function getAll()
     {
-        $decoded = $this->checkForJwt();
-        if (!$decoded) {
-            return;
+        if($this->checkJWT()){return;}
+        try {
+            $users = $this->service->getAll();
+            $this->respond($users);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
         }
-        $users = $this->service->getAll();
-        $this->respond($users);
     }
 
     public function getOne($id)
     {
-        $decoded = $this->checkForJwt();
-        if (!$decoded) {
-            return;
+        try {
+            $user = $this->service->getOne($id);
+            $user->password = "";
+            $this->respond($user);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
         }
-        $user = $this->service->getOne($id);
-        $user->password = "";
-        $this->respond($user);
     }
     public function update($id)
     {
+        if($this->checkJWT()){return;}
         try {
-            $decoded = $this->checkForJwt();
-            if (!$decoded) {
-                return;
-            }
             $user = $this->createObjectFromPostedJson(User::class);
             $check = $this->service->update($user, $id);
             if ($check) {
                 $this->respond($user);
             } else {
-                $this->respondWithError(401, "Unauthorized");
+                $this->respondWithError(401, "Password is incorrect");
             }
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
@@ -104,27 +102,36 @@ class UserController extends Controller
     }
     public function updateAdmin($id)
     {
-        $decoded = $this->checkForJwt();
-        if (!$decoded) {
-            return;
+        if($this->checkJWT()){return;}
+        try {
+            $user = $this->createObjectFromPostedJson(User::class);
+            $this->service->updateAdmin($user, $id);
+            $this->respond($user);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
         }
-        $user = $this->createObjectFromPostedJson(User::class);
-        $this->service->updateAdmin($user, $id);
-        $this->respond($user);
     }
     public function register()
     {
-        $user = $this->createObjectFromPostedJson(User::class);
-        $this->service->register($user);
-        $this->respond($user);
+        try {
+            $user = $this->createObjectFromPostedJson(User::class);
+            $check = $this->service->register($user);
+            if ($check == 0) {
+                $this->respondWithError(401, "Email already exists");
+                return;
+            }
+            $this->respond($user);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
+        }
     }
     public function delete($id)
     {
-        $decoded = $this->checkForJwt();
-        if (!$decoded) {
-            return;
+        if($this->checkJWT()){return;}
+        try {
+            $this->service->delete($id);
+        } catch (Exception $e) {
+            $this->respondWithError(500, $e->getMessage());
         }
-        $this->service->delete($id);
-        $this->respond("User deleted");
     }
 }

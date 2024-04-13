@@ -241,7 +241,7 @@ class CachedKeySet implements ArrayAccess
         }
 
         // ensure we do not have illegal characters
-        $key = preg_replace('|[^a-zA-Z0-9_\.!]|', '', $this->jwksUri);
+        $key = preg_replace('|[^a-zA-Z0-9@\.!]|', '', $this->jwksUri);
 
         // add prefix
         $key = $this->cacheKeyPrefix . $key;

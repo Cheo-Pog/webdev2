@@ -68,6 +68,20 @@ class UserRepository extends Repository
             echo $e;
         }
     }
+    function getByEmail($email)
+    {
+        try {
+            $query = "SELECT id, firstname, lastname, email, rank FROM users WHERE email = :email";
+            $stmt = $this->connection->prepare($query);
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+
+            $stmt->setFetchMode(PDO::FETCH_CLASS, User::class);
+            return $stmt->fetch();
+        } catch (PDOException $e) {
+            echo $e;
+        }
+    }
     function update($user, $id){
         try {
             $query = "UPDATE users SET firstname = :firstname, lastname = :lastname, email = :email, password = :password, rank = :rank WHERE id = :id";

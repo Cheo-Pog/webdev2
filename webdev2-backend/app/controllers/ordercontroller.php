@@ -17,6 +17,7 @@ class OrderController extends Controller
 
     public function getAll()
     {
+        if($this->checkJWT()){return;}
         $offset = NULL;
         $limit = NULL;
 
@@ -27,13 +28,14 @@ class OrderController extends Controller
             $limit = $_GET["limit"];
         }
 
-        $products = $this->service->getAll($offset, $limit);
+        $orders = $this->service->getAll($offset, $limit);
 
-        $this->respond($products);
+        $this->respond($orders);
     }
 
     public function getOne($id)
     {
+        if($this->checkJWT()){return;}
         $product = $this->service->getOne($id);
 
         // we might need some kind of error checking that returns a 404 if the product is not found in the DB
@@ -45,40 +47,4 @@ class OrderController extends Controller
         $this->respond($product);
     }
 
-    public function create()
-    {
-        try {
-            $product = $this->createObjectFromPostedJson("Models\\Product");
-            $product = $this->service->insert($product);
-
-        } catch (Exception $e) {
-            $this->respondWithError(500, $e->getMessage());
-        }
-
-        $this->respond($product);
-    }
-
-    public function update($id)
-    {
-        try {
-            $product = $this->createObjectFromPostedJson("Models\\Product");
-            $product = $this->service->update($product, $id);
-
-        } catch (Exception $e) {
-            $this->respondWithError(500, $e->getMessage());
-        }
-
-        $this->respond($product);
-    }
-
-    public function delete($id)
-    {
-        try {
-            $this->service->delete($id);
-        } catch (Exception $e) {
-            $this->respondWithError(500, $e->getMessage());
-        }
-
-        $this->respond(true);
-    }
 }

@@ -4,6 +4,7 @@ namespace Controllers;
 
 use Exception;
 use Services\CategoryService;
+use Models\Category;
 
 class CategoryController extends Controller
 {
@@ -47,8 +48,9 @@ class CategoryController extends Controller
 
     public function create()
     {
+        if($this->checkJWT()){return;}
         try {
-            $category = $this->createObjectFromPostedJson("Models\\Category");
+            $category = $this->createObjectFromPostedJson(Category::class);
             $this->service->insert($category);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
@@ -59,8 +61,9 @@ class CategoryController extends Controller
 
     public function update($id)
     {
+        if($this->checkJWT()){return;}
         try {
-            $category = $this->createObjectFromPostedJson("Models\\Category");
+            $category = $this->createObjectFromPostedJson(Category::class);
             $this->service->update($category, $id);
         } catch (Exception $e) {
             $this->respondWithError(500, $e->getMessage());
@@ -71,6 +74,7 @@ class CategoryController extends Controller
 
     public function delete($id)
     {
+        if($this->checkJWT()){return;}
         try {
             $this->service->delete($id);
         } catch (Exception $e) {

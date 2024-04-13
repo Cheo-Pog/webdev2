@@ -1,18 +1,15 @@
 <template>
   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xxl-3 p-2">
     <div class="card product-card h-100">
-      <div class="card-body">
-        <img :src="product.image" :alt="product.title" :title="product.title" />
-        <div class="float-start">
-          <p>{{ product.name }}</p>
-          <p>
-            <small>{{ product.category_name }}</small>
-          </p>
-        </div>
-        <span class="price float-end">{{ product.price }}</span>
+      <img :src="product.image" :alt="product.title" :title="product.title" class="card-img-top" />
+      <div class="card-body"> 
+        <p class="card-text float-end">{{ product.category_name }}</p>
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="card-text">{{ product.description }}</p>
       </div>
       <div class="card-footer">
-        <button class="btn btn-primary" @click="addToCart(product.id)">Add to cart</button>&nbsp;&nbsp;
+        <button class="btn btn-primary btn-sm" @click="addToCart(product.id)">Add to cart</button>
+        <p class="card-text price float-end">€{{ product.price }}</p>
       </div>
     </div>
   </div>
@@ -45,4 +42,18 @@ export default {
 </script>
 
 <style>
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.btn-primary:focus,
+.btn-primary.focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
 </style>

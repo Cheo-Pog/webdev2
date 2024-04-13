@@ -59,7 +59,14 @@ class Controller
         }
     }
 
-
+    function checkJWT()
+    {
+        $decoded = $this->checkForJwt();
+        if (!$decoded) {
+            $this->respondWithError(401, "Unauthorized");
+            return true;
+        }
+    }
 
     function respond($data)
     {

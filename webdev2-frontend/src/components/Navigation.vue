@@ -29,15 +29,13 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-lg-end" aria-labelledby="navbarDropdown" >
               <li class="nav-item dropdown-item">
-                <router-link to="/profile" class="nav-link" active-class="active"
-                  style="color: black;">Profile</router-link>
+                <router-link to="/profile" class="nav-link fix" active-class="active" >Profile</router-link>
               </li>
               <li class="nav-item dropdown-item" v-if="rank >= 2">
-                <router-link to="/admin" class="nav-link" active-class="active"
-                  style="color: black;">admin</router-link>
+                <router-link to="/admin" class="nav-link fix" active-class="active">admin</router-link>
               </li>
               <li class="nav-item dropdown-item">
-                <div class="nav-link" @click="logout()" style="color: black;">Logout</div>
+                <div class="nav-link danger" @click="logout()" style="color: black;">Logout</div>
               </li>
             </ul>
           </li>
@@ -94,4 +92,12 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.fix {
+  color: black !important;
+}
+
+.danger {
+  color: red !important;
+}
+</style>

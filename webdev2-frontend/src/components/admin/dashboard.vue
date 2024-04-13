@@ -1,29 +1,60 @@
 <template>
-    <section>
-      <div class="container">
-        <h2 class="mt-3 mt-lg-5">dashboard</h2>
-      </div>
+  <section>
+    <div class="container">
+      <h2 class="mt-3 mt-lg-5 text-center">Dashboard</h2>
       <div class="row mt-3">
-      <router-link to="/admin/categories">categories</router-link>
+        <div class="col-md-4">
+          <router-link to="/admin/categories" class="dashboard-link">
+            <div class="card">
+              <div class="card-body">
+                Categories
+              </div>
+            </div>
+          </router-link>
+        </div>
+        <div class="col-md-4">
+          <router-link to="/admin/users" class="dashboard-link">
+            <div class="card">
+              <div class="card-body">
+                Users
+              </div>
+            </div>
+          </router-link>
+        </div>
+        <div class="col-md-4"><router-link to="/admin/orders" class="dashboard-link">
+            <div class="card">
+              <div class="card-body">
+                Orders
+              </div>
+            </div>
+          </router-link>
+        </div>
       </div>
-      <div class="row mt-3">
-      <router-link to="/admin/users" >users</router-link>
-      </div>
-      <div class="row mt-3">
-      <router-link to="/admin/orders" >orders</router-link>
-      </div>
+    </div>
+  </section>
+</template>
 
-    </section>
-  </template>
-  
-  <script>
-  import axios from "../../axios-auth";
-  import {useStore} from "../../stores/store.js"
-  
-  export default {
-    name: "Admin-Dashboard",
-  };
-  </script>
-  
-  <style>
-  </style>
+<script>
+import axios from "../../axios-auth";
+import { useStore } from "../../stores/store.js"
+
+export default {
+  name: "Admin-Dashboard",
+};
+</script>
+
+<style scoped>
+.dashboard-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.card {
+  height: 100%;
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+</style>
