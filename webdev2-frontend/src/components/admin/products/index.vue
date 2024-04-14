@@ -4,7 +4,7 @@
             <button class="btn btn-primary" @click="this.$router.push('/admin/products/create')">Create Product</button>
             <h1>products</h1>
             <div class="row">
-                <div class="col-md-12 col-sm-8">
+                <div class="col-md-12">
                     <div class="table-responsive">
                         <table id="cart" class="table table-hover table-condensed">
                             <thead>
@@ -12,7 +12,7 @@
                                     <th>Name</th>
                                     <th>Price</th>
                                     <th>Description</th>
-                                    <th>Image</th>
+                                    <th  class="d-none d-md-table-cell">Image</th>
                                     <th>Category Name</th>
                                     <th>Actions</th>
                                 </tr>
@@ -29,7 +29,7 @@
                                     <td>
                                             {{ product.description }}
                                     </td>
-                                    <td>
+                                    <td  class="d-none d-md-table-cell">
                                         {{ product.image }}
                                     </td>
                                     <td>

@@ -1,7 +1,9 @@
 <template>
   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xxl-3 p-2">
-    <div class="card product-card h-100">
-      <img :src="product.image" :alt="product.title" :title="product.title" class="card-img-top" />
+    <div class="card h-100">
+      <div class="card-header h-100">
+        <img :src="product.image" :alt="product.title" :title="product.title" class="card-img-top w-100" />
+      </div>
       <div class="card-body"> 
         <p class="card-text float-end">{{ product.category_name }}</p>
         <h5 class="card-title">{{ product.name }}</h5>

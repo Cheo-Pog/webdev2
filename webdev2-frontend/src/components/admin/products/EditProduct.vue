@@ -29,8 +29,10 @@
           <input type="file" class="form-control" @change="uploadFile" />
         </div>
 
+
+
         <div class="input-group mb-3">
-          <span class="input-group-text">Category</span>
+          <span class="input-group-text">category</span>
           <select class="form-select" v-model="product.category_id">
             <option
               v-for="category in categories"
@@ -40,6 +42,13 @@
               {{ category.name }}
             </option>
           </select>
+        </div>
+        
+        <div class="image-preview" v-if="product.image">
+          <img :src="product.image" alt="product image" />
+          <button type="button" class="btn btn-danger" @click="deleteImg">
+            Remove image
+          </button>
         </div>
 
         <div class="input-group mt-4">
@@ -110,6 +119,15 @@ export default {
         .post("/upload", formData)
         .then((res) => {
           this.product.image = res.data;
+        })
+        .catch((error) => console.log(error));
+    },
+    deleteImg() {
+      const fileName = this.product.image.split("/").pop();
+      axios
+        .delete("/upload/" + fileName)
+        .then((res) => {
+          this.product.image = "";
         })
         .catch((error) => console.log(error));
     },

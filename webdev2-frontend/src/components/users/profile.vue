@@ -37,14 +37,12 @@
                                         <option value="2">Admin</option>
                                     </select>
                                 </div>
-
                                 <div class="alert alert-danger" v-if="errorMessage">{{ errorMessage }}</div>
-                                <button type="button" class="btn btn-primary col-6" @click="save">Save</button>
-
                                 <button type="button" class="btn btn-danger col-6" v-if="!isEdit"
                                     @click="this.$router.push('/')">Cancel</button>
                                 <button type="button" class="btn btn-danger col-6" v-else
                                     @click="this.$router.push('/admin/users')">Cancel</button>
+                                <button type="button" class="btn btn-primary col-6" @click="save">Save</button>
                             </form>
                         </div>
                     </div>
@@ -120,7 +118,7 @@ export default {
                     this.store.setUser(res.data);
                     this.$router.replace("/")
                 })
-                .catch((error) => this.errorMessage =  error.response.data.errorMessage);
+                .catch((error) => this.errorMessage = error.response.data.errorMessage);
         },
         saveAdmin() {
             axios

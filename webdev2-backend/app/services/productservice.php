@@ -34,6 +34,9 @@ class ProductService {
     public function delete($item) {       
         return $this->repository->delete($item);        
     }
+    public function removeImage($item) {       
+        return $this->repository->removeImage($item);        
+    }
 }
 
 ?>

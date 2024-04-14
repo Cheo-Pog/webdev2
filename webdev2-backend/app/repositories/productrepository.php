@@ -117,4 +117,15 @@ class ProductRepository extends Repository
         }
         return true;
     }
+    function removeImage($image){
+        try {
+            $stmt = $this->connection->prepare("UPDATE products SET image = '' WHERE image = :image");
+            $stmt->bindParam(':image', $image);
+            $stmt->execute();
+            return;
+        } catch (PDOException $e) {
+            echo $e;
+        }
+        return true;
+    }
 }

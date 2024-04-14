@@ -50,6 +50,7 @@ $router->get('/orders/(\d+)', 'OrderController@getOne');
 
 // routes for upload endpoint
 $router->post('/upload', 'Controller@upload');
+$router->delete('/upload/(.+)', 'Controller@removeImage');
 
 
 // Run it!

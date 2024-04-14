@@ -1,11 +1,13 @@
 <template>
     <section>
         <div class="container">
-            <button class="btn btn-danger " @click="this.$router.push('/admin')">Cancel</button>
-            <button class="btn btn-primary float-end" @click="this.$router.push('/admin/categories/create')">Create Category</button>
+            <div>
+                <button class="btn btn-danger " @click="this.$router.push('/admin')">Cancel</button>
+                <button class="btn btn-primary float-end" @click="this.$router.push('/admin/categories/create')">Create Category</button>
+            </div>
             <h1>Categories</h1>
             <div class="row">
-                <div class="col-md-12 col-sm-8">
+                <div class="col-md-12">
                     <div class="table-responsive">
                         <table id="cart" class="table table-hover table-condensed">
                             <thead>
@@ -24,8 +26,10 @@
                                         {{ category.name }}
                                     </td>
                                     <td>
-                                        <button class="btn btn-danger remove" @click="remove(category.id)">Remove</button>
-                                        <button class="btn btn-primary remove" @click="this.$router.push('/admin/categories/edit/' + Number(category.id))">Edit</button>
+                                        <button class="btn btn-danger remove"
+                                            @click="remove(category.id)">Remove</button>
+                                        <button class="btn btn-primary remove"
+                                            @click="this.$router.push('/admin/categories/edit/' + Number(category.id))">Edit</button>
                                     </td>
                                 </tr>
                             </tbody>

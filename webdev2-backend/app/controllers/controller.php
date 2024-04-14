@@ -5,6 +5,7 @@ namespace Controllers;
 use Exception;
 use \Firebase\JWT\JWT;
 use \Firebase\JWT\Key;
+use Services\ProductService;
 
 class Controller
 {
@@ -38,24 +39,40 @@ class Controller
     }
     public function upload()
     {
-        error_reporting(E_ALL);
-        header('content-type: application/json; charset=utf-8');
+        $url = $_SERVER['HTTP_HOST'];
 
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $uploadDirectory = '/app/public/';
+            $uploadDirectory = '/app/public/uploads/';
+            $path = 'http://' . $url . '/uploads/';
 
             $fileName = uniqid() . '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
             $targetPath = $uploadDirectory . $fileName;
 
             if (move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
                 // Return the uploaded image path
-                $this->respond('/uploads/' . $fileName);
+                $this->respond($path . $fileName);
             } else {
                 $this->respondWithError(401, "Error uploading file.");
                 return;
             }
         } else {
             $this->respondWithError(404, "No file uploaded or file upload error occurred.");
+        }
+    }
+    public function removeImage($fileName)
+    {
+        $uploadDirectory = '/app/public/uploads/';
+
+        $filePath = $uploadDirectory . $fileName;
+
+        if (file_exists($filePath)) {
+            unlink($filePath);
+            $productService = new ProductService();
+            $productService->removeImage('http://localhost/uploads/' . $fileName);
+
+            $this->respond("File deleted successfully.");
+        } else {
+            $this->respondWithError(404, "File not found.");
         }
     }
 

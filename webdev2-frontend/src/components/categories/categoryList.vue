@@ -1,10 +1,8 @@
 <template>
-    <router-link v-for="category in categories" :key="category.id" :to="'/products/category/' + category.id">
-        <div class="nav-item" :value="category.id">
+    <router-link class="nav-link p-0 h-100" v-for="category in categories" :key="category.id" :to="'/products/category/' + category.id">
             <li class="dropdown-item nav-item">
                 {{ category.name }}
             </li>
-        </div>
     </router-link>
 </template>
 

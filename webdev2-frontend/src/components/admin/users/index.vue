@@ -5,12 +5,12 @@
             <button class="btn btn-primary float-end" @click="this.$router.push('/admin/users/create')">Create User</button>
             <h1>Users</h1>
             <div class="row">
-                <div class="col-md-12 col-sm-8">
+                <div class="col-md-12">
                     <div class="table-responsive">
                         <table id="cart" class="table table-hover table-condensed">
                             <thead>
                                 <tr>
-                                    <th>Id</th>
+                                    <th class="d-none d-sm-table-cell">Id</th>
                                     <th>Email</th>
                                     <th>First Name</th>
                                     <th>Last Name</th>
@@ -20,7 +20,7 @@
                             </thead>
                             <tbody v-for="user in users">
                                 <tr>
-                                    <td>
+                                    <td class="d-none d-sm-table-cell">
                                         {{ user.id }}
                                     </td>
                                     <td>
